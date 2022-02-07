@@ -1,3 +1,15 @@
-.message{
+.container{
+    width:100%;
+    text-align: center;
+}
+#messages{
     background-color:beige;
+    width:80%;
+    height:300px;
+}
+#btnSend{
+    background-color:crimson;
+    color:white;
+    margin:auto;
+    padding:15px;
 }
