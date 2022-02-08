@@ -11,19 +11,19 @@ const online=document.getElementById('onLine');
 const message=document.getElementById('message');
 let onlineMembers;
 let id;
-
+let user;
 const socket=io();
 
-function getIdFromName(onlineArr,name){
-    for(i=0;i<onlineArr.length;i++){
-        ele=onlineArr[i];
-        if(ele.user==name){
-            print("yes")
-            return ele.id
-        }
-    }
-    return null
-}
+// function getIdFromName(onlineArr,name){
+//     for(i=0;i<onlineArr.length;i++){
+//         ele=onlineArr[i];
+//         if(ele.user==name){
+//             print("yes")
+//             return ele.id
+//         }
+//     }
+//     return null
+// }
 
 socket.on('connect',()=>{
     print("Connected")
@@ -43,13 +43,15 @@ btnConnect.addEventListener('click', ()=>{
     
     id=`${Math.trunc(Math.random()*999)}-${Math.trunc(Math.random()*999)}-${Math.trunc(Math.random()*999)}-${Math.trunc(Math.random()*999)}`;
     idText.value=id;
-    const user=userName.value;
+    user=userName.value;
     socket.emit('userData',{userName:user,userID:id})
 })
-btnSend.addEventListener('click',()=>{
-    const senderId=getIdFromName(onlineMembers,receiver.value)
-    
-    // socket.emit('message',{socketID:socket.id,to:senderId,from:""})
+btnSend.addEventListener('click',()=>{   
+    socket.emit('sendMessage',{senderName:user,receiverName:receiver.value,message:message.value})
+})
+socket.on('receiveMessage',(data)=>{
+    print(data.senderName)
+    print(data.message)
+    messageBox.innerHTML+=`<p>${data.senderName}-->${data.message}</p>`
 })
 
-//Todo figuring sending message
